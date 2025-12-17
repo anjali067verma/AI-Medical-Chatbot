@@ -20,6 +20,3 @@ python-dotenv==1.1.0
 
 # ---------- Server ----------
 gunicorn==22.0.0
-
-# ---------- Project ----------
--e .
