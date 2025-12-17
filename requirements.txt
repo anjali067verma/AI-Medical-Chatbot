@@ -1,4 +1,5 @@
 # ---------- Core LangChain ----------
+gunicorn==22.1.0
 langchain==0.3.26
 langchain-community==0.3.26
 langchain-pinecone==0.2.8
