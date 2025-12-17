@@ -2,11 +2,10 @@
 langchain==0.3.26
 langchain-community==0.3.26
 langchain-pinecone==0.2.8
-langchain-openai==0.3.24
 langchain-groq==0.2.1
 
 # ---------- Vector DB (ONLY this Pinecone package) ----------
-pinecone==3.2.2
+pinecone==7.3.0
 
 # ---------- LLM / Embeddings ----------
 sentence-transformers==4.1.0
