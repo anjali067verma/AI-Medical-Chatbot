@@ -1,13 +1,13 @@
 
-from flask import Flask, render_template, jsonify, request
-from src.helper import download_hugging_face_embeddings
+from flask import Flask, render_template, request
+# from src.helper import download_hugging_face_embeddings
 from langchain_pinecone import PineconeVectorStore
 from langchain_groq import ChatGroq
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
 from dotenv import load_dotenv
-from src.prompt import *
+from src.prompt import system_prompt
 import os
 
 
@@ -23,19 +23,21 @@ os.environ["PINECONE_API_KEY"] = PINECONE_API_KEY
 os.environ["GROQ_API_KEY"] = GROQ_API_KEY
 
 
-embeddings = download_hugging_face_embeddings()
+#embeddings = download_hugging_face_embeddings()
 
 index_name = "ai-medical-chatbot" 
 # Embed each chunk and upsert the embeddings into your Pinecone index.
-docsearch = PineconeVectorStore.from_existing_index(
-    index_name=index_name,
-    embedding=embeddings
+# docsearch = PineconeVectorStore.from_existing_index(
+#     index_name=index_name,
+#     embedding=None
+# )
+
+
+vectorstore = PineconeVectorStore.from_existing_index(
+    index_name=index_name
 )
 
-
-
-
-retriever = docsearch.as_retriever(search_type="similarity", search_kwargs={"k":3})
+retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k":3})
 
 chatModel = ChatGroq(model_name="llama-3.3-70b-versatile")
 prompt = ChatPromptTemplate.from_messages(
@@ -68,4 +70,4 @@ def chat():
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)), debug=True)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
